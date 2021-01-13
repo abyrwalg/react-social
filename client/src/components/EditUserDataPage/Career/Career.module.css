@@ -1,0 +1,59 @@
+.Career {
+  border-top: none;
+}
+
+.Secondary {
+  border-top: none;
+}
+
+.addInstitution {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  text-align: center;
+  color: rgb(0, 102, 255);
+  cursor: pointer;
+}
+
+.addInstitution:hover {
+  text-decoration: underline;
+}
+
+.formBlock {
+  margin-bottom: 30px;
+}
+
+.closeIcon {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.closeIcon i {
+  left: calc(100% - 12px);
+  top: 5px;
+  position: absolute;
+  color: #212529;
+  cursor: pointer;
+}
+
+.hiddenMessage {
+  display: flex;
+  margin-bottom: 20px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.undo {
+  color: rgb(0, 102, 255);
+  cursor: pointer;
+  margin-right: auto;
+}
+
+.undo:hover {
+  text-decoration: underline;
+}
+
+.hiddenInfo {
+  color: #6c757d;
+}

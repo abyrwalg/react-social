@@ -1,0 +1,15 @@
+.canChange {
+  cursor: pointer;
+}
+
+.canChange:hover {
+  color: blue !important;
+}
+
+.changeStatus {
+  font-style: italic;
+}
+
+.statusForm {
+  display: flex;
+}

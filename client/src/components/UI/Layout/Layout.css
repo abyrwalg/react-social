@@ -1,0 +1,24 @@
+.main-navigation-bar .dropdown.nav-item a#basic-nav-dropdown {
+  display: flex;
+  align-items: center;
+  height: 35px;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.main-navigation-bar .dropdown.nav-item a#basic-nav-dropdown:hover,
+.main-navigation-bar .logout-button:hover {
+  color: white;
+}
+
+.main-navigation-bar .dropdown.nav-item a::after {
+  top: 100px;
+}
+
+.main-navigation-bar .dropdown-menu.show {
+  top: 135%;
+}
+
+.main-navigation-bar .logout-button {
+  color: rgba(255, 255, 255, 0.75);
+}

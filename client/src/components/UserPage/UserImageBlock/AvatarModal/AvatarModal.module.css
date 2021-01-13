@@ -1,0 +1,25 @@
+.uploadForm {
+  display: flex;
+}
+
+.imageInput {
+  margin-right: 10px;
+}
+
+.modalBody {
+  display: flex;
+  justify-content: center;
+}
+
+.modalFooter {
+  display: block;
+}
+
+.buttonContainer {
+  display: flex;
+  margin-top: 10px;
+}
+
+.deleteButton {
+  margin-left: auto !important;
+}

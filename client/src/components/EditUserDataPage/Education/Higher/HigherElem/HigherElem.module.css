@@ -1,0 +1,13 @@
+.closeIcon {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.closeIcon i {
+  left: calc(100% - 12px);
+  top: 5px;
+  position: absolute;
+  color: #212529;
+  cursor: pointer;
+}

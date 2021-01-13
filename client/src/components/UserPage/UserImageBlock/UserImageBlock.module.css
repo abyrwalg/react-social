@@ -1,0 +1,8 @@
+.UserImageBlock {
+  position: sticky;
+  top: 75px;
+}
+
+.clickable {
+  cursor: pointer;
+}
