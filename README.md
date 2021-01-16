@@ -1,2 +1,2 @@
 # react-social
-Full-stack social network app made with Node.JS/Express and React
+Full-stack social network app made with Node.JS/Express and React. Work in progress. 
