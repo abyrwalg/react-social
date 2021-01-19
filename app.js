@@ -15,6 +15,7 @@ app.use("/uploads", express.static("uploads"));
 //Route middlewares
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/user", require("./routes/user.routes"));
+app.use("/api/comments", require("./routes/comments.routes"));
 
 async function start() {
   try {

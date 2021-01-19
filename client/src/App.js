@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Switch, Route, Redirect } from "react-router-dom";
 
@@ -15,7 +17,11 @@ function App() {
   const { token, login, logout, uid, expires, ready } = useAuth();
   const { avatar, username, changeAvatar, changeUsername } = useUserMenu();
   const isAuthenticated = new Date() < new Date(expires);
-  console.log(isAuthenticated);
+
+  /* useEffect(() => {
+    document.body.style.backgroundColor = "#edeef0";
+  }, []); */
+
   return (
     <AuthContext.Provider
       value={{

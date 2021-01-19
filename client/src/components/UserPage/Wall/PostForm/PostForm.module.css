@@ -1,0 +1,12 @@
+.PostForm {
+  margin-bottom: 15px;
+}
+
+.textArea {
+  resize: none;
+}
+
+.submitButton {
+  display: block;
+  margin-left: auto;
+}

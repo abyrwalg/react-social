@@ -1,0 +1,50 @@
+.Post {
+  margin-bottom: 15px;
+}
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.avatar {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.userName {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.date {
+  color: #6c757d;
+}
+
+.postFooter {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.like {
+  margin-right: 20px;
+  color: #6c757d;
+  cursor: pointer;
+}
+
+.like:hover {
+  color: red;
+}
+
+.comments {
+  position: relative;
+  bottom: 1.5px;
+  color: #6c757d;
+  cursor: pointer;
+}
+
+.comments:hover {
+  color: black;
+}

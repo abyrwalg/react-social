@@ -1,6 +1,7 @@
 .UserImageBlock {
   position: sticky;
   top: 75px;
+  margin-bottom: 15px;
 }
 
 .clickable {

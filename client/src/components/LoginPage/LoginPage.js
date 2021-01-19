@@ -63,7 +63,7 @@ const LoginPage = () => {
         const data = await request(url, "POST", clearedFormData);
         console.log(data);
         if (data.token) {
-          login(data.token, data.uid, data.expires, data.name);
+          login(data.token, data.id, data.uid, data.expires, data.name);
         }
       } catch (error) {
         setAlert({ variant: "danger", message: error.message, show: true });

@@ -82,6 +82,7 @@ exports.login = async (req, res) => {
       message: "Success",
       token,
       uid: user.regInfo.uid,
+      id: user._id,
       name: user.header.name,
       expires: Date.now() + 3600 * 1000,
     });

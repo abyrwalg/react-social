@@ -28,8 +28,6 @@ export const PersonalData = (props) => {
     );
   };
 
-  console.log(props.data);
-
   return (
     <>
       <hr />

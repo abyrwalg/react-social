@@ -2,7 +2,6 @@ import "font-awesome/css/font-awesome.min.css";
 
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-//import Form from "react-bootstrap/Form";
 
 import classes from "./WorkPlace.module.css";
 import { createFormPart } from "../../../../utils/utils";

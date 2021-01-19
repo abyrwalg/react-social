@@ -7,9 +7,11 @@ import { Header } from "./Header/Header";
 import { MainInfo } from "./MainInfo/MainInfo";
 import { PersonalData } from "./PersonalData/PersonalData";
 
+import classes from "./MainData.module.css";
+
 const MainData = (props) => {
   return (
-    <Card>
+    <Card className={classes.MainData}>
       <Card.Body>
         <Header data={props.userData.header} id={props.id} />
         <Card.Text as={"div"}>
