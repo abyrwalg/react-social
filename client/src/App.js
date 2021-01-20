@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Switch, Route, Redirect } from "react-router-dom";
 
@@ -14,13 +12,9 @@ import { useUserMenu } from "./hooks/userMenu.hook";
 import { EditUserDataPage } from "./components/EditUserDataPage/EditUserDataPage";
 
 function App() {
-  const { token, login, logout, uid, expires, ready } = useAuth();
+  const { token, login, logout, id, uid, expires, ready } = useAuth();
   const { avatar, username, changeAvatar, changeUsername } = useUserMenu();
   const isAuthenticated = new Date() < new Date(expires);
-
-  /* useEffect(() => {
-    document.body.style.backgroundColor = "#edeef0";
-  }, []); */
 
   return (
     <AuthContext.Provider
@@ -28,6 +22,7 @@ function App() {
         token,
         login,
         logout,
+        id,
         uid,
         username,
         isAuthenticated,

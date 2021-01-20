@@ -19,7 +19,6 @@ const Wall = (props) => {
     async function fetchData() {
       try {
         const data = await request(`/api/comments/${id}`, "GET");
-        console.log(data.comments);
         setComments(data.comments);
       } catch (error) {
         console.log(error);
@@ -31,9 +30,16 @@ const Wall = (props) => {
   let componentContent = (
     <Card className={classes.Wall}>
       <Card.Body className={classes.cardBody}>
-        {isAuthenticated ? <PostForm id={id} /> : null}
+        {isAuthenticated ? (
+          <PostForm id={id} setComments={setComments} comments={comments} />
+        ) : null}
         {comments.map((comment) => (
-          <Post comment={comment} key={comment._id} />
+          <Post
+            comment={comment}
+            key={comment._id}
+            comments={comments}
+            setComments={setComments}
+          />
         ))}
       </Card.Body>
     </Card>

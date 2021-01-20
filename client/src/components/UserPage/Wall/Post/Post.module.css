@@ -9,13 +9,21 @@
 }
 
 .avatar {
+  width: 50px;
   height: 50px;
   margin-right: 10px;
+  background-size: cover;
+  background-position: center;
 }
 
 .userName {
   margin-right: 10px;
   font-weight: bold;
+  color: inherit;
+}
+
+.userName:hover {
+  color: inherit;
 }
 
 .date {
@@ -47,4 +55,29 @@
 
 .comments:hover {
   color: black;
+}
+
+.dropDownButton {
+  align-self: flex-start;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.editComment textarea {
+  margin-bottom: 15px;
+  resize: none;
+  overflow: hidden;
+}
+
+.editCommentButtons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editCommentButtons button:last-child {
+  margin-left: 10px;
+}
+
+.hide {
+  display: none;
 }

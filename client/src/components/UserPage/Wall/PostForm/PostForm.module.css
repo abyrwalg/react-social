@@ -3,7 +3,9 @@
 }
 
 .textArea {
+  min-height: 99px;
   resize: none;
+  overflow: hidden;
 }
 
 .submitButton {

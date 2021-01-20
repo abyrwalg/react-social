@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -9,14 +9,22 @@ import { useHttp } from "../../../../hooks/http.hook";
 import { AuthContext } from "../../../../context/AuthContext";
 
 export default function PostForm(props) {
-  const { request } = useHttp();
+  const { request, loading } = useHttp();
   const { token } = useContext(AuthContext);
   const [commentText, setCommentText] = useState("");
+  const [textareaHeight, setTextareaHeight] = useState(100);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    setTextareaHeight(textareaRef.current.scrollHeight);
+  }, [commentText]);
 
   const submitFormHandler = async (event) => {
     event.preventDefault();
     try {
-      await request(
+      console.log(loading);
+      setCommentText("");
+      const data = await request(
         "/api/comments",
         "POST",
         {
@@ -25,13 +33,16 @@ export default function PostForm(props) {
         },
         { Authorization: `Bearer ${token}` }
       );
+      console.log(loading);
+      props.setComments([data.comment, ...props.comments]);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const textAreaHandler = (event) => {
+  const textAreaChangeHandler = (event) => {
     setCommentText(event.target.value);
+    setTextareaHeight(0);
   };
 
   return (
@@ -42,14 +53,17 @@ export default function PostForm(props) {
           placeholder="Напишите что-нибудь"
           className={classes.textArea}
           value={commentText}
-          onChange={textAreaHandler}
+          onChange={textAreaChangeHandler}
+          ref={textareaRef}
+          style={{ height: textareaHeight }}
+          rows={3}
         />
       </Form.Group>
       <Button
         variant="primary"
         type="submit"
         className={classes.submitButton}
-        disabled={commentText.trim().length > 0 ? false : true}
+        disabled={(commentText.trim().length > 0 ? false : true) || loading}
       >
         Опубликовать
       </Button>
