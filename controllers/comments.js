@@ -1,3 +1,4 @@
+const { array } = require("joi");
 const Comment = require("../models/Comment");
 const User = require("../models/User");
 const validateComment = require("../utils/validateComment");
@@ -95,6 +96,27 @@ exports.editComment = async (req, res) => {
       content: req.body.content,
     });
     res.status(200).json({ message: "Success" });
+  } catch (error) {
+    res.status(400).json({
+      message: "Что-то пошло не так, попробуйте снова",
+      error: error.message,
+    });
+  }
+};
+
+exports.toggleLike = async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.body.id);
+    if (!comment.likes.includes(req.user.id)) {
+      comment.likes.push(req.user.id);
+      comment.save();
+      res.status(201).json({ message: "Success", likes: comment.likes });
+    } else {
+      const likeIndex = comment.likes.indexOf(req.user.id);
+      comment.likes.splice(likeIndex, 1);
+      comment.save();
+      res.status(201).json({ message: "Success", likes: comment.likes });
+    }
   } catch (error) {
     res.status(400).json({
       message: "Что-то пошло не так, попробуйте снова",

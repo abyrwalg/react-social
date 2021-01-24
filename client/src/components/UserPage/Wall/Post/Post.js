@@ -21,12 +21,16 @@ export default function Post(props) {
   const postDate = new Date(comment.date);
   const dateOptions = { year: "numeric", month: "long", day: "numeric" };
   const avatarPath = comment.avatar.replace(/\\/g, "/");
+  const { token, id } = useContext(AuthContext);
   const [showEditArea, setShowEditArea] = useState(false);
   const [editAreaContent, setEditAreaContent] = useState(comment.content);
   const [editAreaHeight, setEditAreaHeight] = useState(0);
+  const [likesCount, setLikesCount] = useState(comment.likes.length);
+  const [likesIconClass, setLikesIconClass] = useState(
+    comment.likes.includes(id) ? `fa fa-heart ${classes.red}` : "fa fa-heart-o"
+  );
   const editAreaRef = useRef(null);
   const { request, loading } = useHttp();
-  const { token, id } = useContext(AuthContext);
 
   const [hideDropdownMenuClass, setHideDropdownMenuClass] = useState("");
   let hideEdiCommentButtonClass = "";
@@ -106,6 +110,23 @@ export default function Post(props) {
     }
   };
 
+  const likeHandler = async () => {
+    try {
+      const data = await request(
+        "/api/comments/likes",
+        "POST",
+        { id: comment._id },
+        { Authorization: `Bearer ${token}` }
+      );
+      setLikesCount(data.likes.length);
+      setLikesIconClass(
+        data.likes.includes(id) ? `fa fa-heart ${classes.red}` : "fa fa-heart-o"
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Card className={classes.Post}>
       <Card.Body>
@@ -169,7 +190,11 @@ export default function Post(props) {
         </Card.Text>
       </Card.Body>
       <Card.Footer className={classes.postFooter}>
-        <i className={`fa fa-heart-o ${classes.like}`}></i>
+        <i
+          className={`${likesIconClass} ${classes.like}`}
+          onClick={likeHandler}
+        ></i>
+        <span className={classes.likesCount}>{likesCount}</span>
         <i className={`fa fa-comment-o ${classes.comments}`}></i>
       </Card.Footer>
     </Card>

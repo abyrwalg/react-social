@@ -37,13 +37,29 @@
 }
 
 .like {
-  margin-right: 20px;
   color: #6c757d;
   cursor: pointer;
+  margin-right: 2px;
 }
 
 .like:hover {
   color: red;
+}
+
+.like.red {
+  color: red;
+}
+
+.like.red:hover {
+  color: #6c757d;
+}
+
+.likesCount {
+  position: relative;
+  bottom: -2px;
+  font-size: 0.8rem;
+  margin-right: 10px;
+  align-self: flex-end;
 }
 
 .comments {
