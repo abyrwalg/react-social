@@ -1,13 +1,13 @@
-import { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from 'react';
 
-import Card from "react-bootstrap/Card";
+import Card from 'react-bootstrap/Card';
 
-import PostForm from "./PostForm/PostForm";
-import Post from "./Post/Post";
+import PostForm from './PostForm/PostForm';
+import Post from './Post/Post';
 
-import classes from "./Wall.module.css";
-import { useHttp } from "../../../hooks/http.hook";
-import { AuthContext } from "../../../context/AuthContext";
+import classes from './Wall.module.css';
+import { useHttp } from '../../../hooks/http.hook';
+import { AuthContext } from '../../../context/AuthContext';
 
 const Wall = (props) => {
   const { id } = props;
@@ -18,7 +18,7 @@ const Wall = (props) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await request(`/api/comments/${id}`, "GET");
+        const data = await request(`/api/comments/${id}`, 'GET');
         setComments(data.comments);
       } catch (error) {
         console.log(error);

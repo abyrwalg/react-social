@@ -1,14 +1,17 @@
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
 
-import { Secondary } from "./Secondary/Secondary";
-import { Higher } from "./Higher/Higher";
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+
+import { Secondary } from './Secondary/Secondary';
+import { Higher } from './Higher/Higher';
 
 export const Education = (props) => {
-  const data = props.data;
-  const higherData = data.filter((institution) => institution.type === "Вуз");
+  const { data } = props;
+  const higherData = data.filter((institution) => institution.type === 'Вуз');
   const secondaryData = data.filter(
-    (institution) => institution.type === "Школа"
+    (institution) => institution.type === 'Школа'
   );
 
   return (

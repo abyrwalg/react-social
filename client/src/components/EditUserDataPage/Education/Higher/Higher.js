@@ -1,19 +1,26 @@
-import React, { useContext, useState } from "react";
+/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable no-continue */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-shadow */
+import React, { useContext, useState } from 'react';
 
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-import "font-awesome/css/font-awesome.min.css";
+import 'font-awesome/css/font-awesome.min.css';
 
-import { HigherElem } from "./HigherElem/HigherElem";
-import classes from "./Higher.module.css";
-import { validateFormArray } from "../../../../utils/utils";
-import { AuthContext } from "../../../../context/AuthContext";
-import { useHttp } from "../../../../hooks/http.hook";
+import { HigherElem } from './HigherElem/HigherElem';
+import classes from './Higher.module.css';
+import { validateFormArray } from '../../../../utils/utils';
+import { AuthContext } from '../../../../context/AuthContext';
+import { useHttp } from '../../../../hooks/http.hook';
 
 export const Higher = (props) => {
-  const data = props.data;
+  const { data } = props;
 
   const { token } = useContext(AuthContext);
   const { request, loading } = useHttp();
@@ -23,9 +30,9 @@ export const Higher = (props) => {
       const form = {
         name: {
           value: element.name,
-          type: "text",
-          label: "Вуз",
-          placeholder: "Укажите название вуза",
+          type: 'text',
+          label: 'Вуз',
+          placeholder: 'Укажите название вуза',
           validation: {
             required: true,
             min: 1,
@@ -36,9 +43,9 @@ export const Higher = (props) => {
         },
         specialty: {
           value: element.specialty,
-          type: "text",
-          label: "Специальность",
-          placeholder: "Укажите специальность",
+          type: 'text',
+          label: 'Специальность',
+          placeholder: 'Укажите специальность',
           validation: {
             required: false,
             min: 1,
@@ -49,9 +56,9 @@ export const Higher = (props) => {
         },
         status: {
           value: element.status,
-          type: "text",
-          label: "Статус",
-          placeholder: "Укажите статус (например, студент)",
+          type: 'text',
+          label: 'Статус',
+          placeholder: 'Укажите статус (например, студент)',
           validation: {
             required: false,
             min: 1,
@@ -62,24 +69,24 @@ export const Higher = (props) => {
         },
         yearStart: {
           value: element.yearStart,
-          type: "text",
-          label: "Год начала обучения",
-          placeholder: "Укажите год начала обучения",
+          type: 'text',
+          label: 'Год начала обучения',
+          placeholder: 'Укажите год начала обучения',
           validation: {
             required: false,
-            type: "year",
+            type: 'year',
           },
           isInvalid: false,
           errorMessage: null,
         },
         yearEnd: {
           value: element.yearEnd,
-          type: "text",
-          label: "Год окончания обучения",
-          placeholder: "Укажите год окончания обучения",
+          type: 'text',
+          label: 'Год окончания обучения',
+          placeholder: 'Укажите год окончания обучения',
           validation: {
             required: false,
-            type: "year",
+            type: 'year',
           },
           isInvalid: false,
           errorMessage: null,
@@ -94,10 +101,10 @@ export const Higher = (props) => {
       ...prevForm,
       {
         name: {
-          value: "",
-          type: "text",
-          label: "Вуз",
-          placeholder: "Укажите название вуза",
+          value: '',
+          type: 'text',
+          label: 'Вуз',
+          placeholder: 'Укажите название вуза',
           validation: {
             required: true,
             min: 1,
@@ -107,10 +114,10 @@ export const Higher = (props) => {
           errorMessage: null,
         },
         specialty: {
-          value: "",
-          type: "text",
-          label: "Специальность",
-          placeholder: "Укажите специальность",
+          value: '',
+          type: 'text',
+          label: 'Специальность',
+          placeholder: 'Укажите специальность',
           validation: {
             required: false,
             min: 1,
@@ -120,10 +127,10 @@ export const Higher = (props) => {
           errorMessage: null,
         },
         status: {
-          value: "",
-          type: "text",
-          label: "Статус",
-          placeholder: "Укажите статус (например, студент)",
+          value: '',
+          type: 'text',
+          label: 'Статус',
+          placeholder: 'Укажите статус (например, студент)',
           validation: {
             required: false,
             min: 1,
@@ -133,25 +140,25 @@ export const Higher = (props) => {
           errorMessage: null,
         },
         yearStart: {
-          value: "",
-          type: "text",
-          label: "Год начала обучения",
-          placeholder: "Укажите год начала обучения",
+          value: '',
+          type: 'text',
+          label: 'Год начала обучения',
+          placeholder: 'Укажите год начала обучения',
           validation: {
             required: false,
-            type: "year",
+            type: 'year',
           },
           isInvalid: false,
           errorMessage: null,
         },
         yearEnd: {
-          value: "",
-          type: "text",
-          label: "Год окончания обучения",
-          placeholder: "Укажите год окончания обучения",
+          value: '',
+          type: 'text',
+          label: 'Год окончания обучения',
+          placeholder: 'Укажите год окончания обучения',
           validation: {
             required: false,
-            type: "year",
+            type: 'year',
           },
           isInvalid: false,
           errorMessage: null,
@@ -177,13 +184,13 @@ export const Higher = (props) => {
     if (valid) {
       const formToSend = [];
 
-      form.forEach((element, index) => {
+      form.forEach((element) => {
         if (element.removed) {
           return;
         }
-        const formPart = { type: "Вуз" };
+        const formPart = { type: 'Вуз' };
         for (const key in element) {
-          if (key === "empty") {
+          if (key === 'empty') {
             continue;
           }
           formPart[key] = element[key].value;
@@ -191,17 +198,17 @@ export const Higher = (props) => {
         formToSend.push(formPart);
       });
       try {
-        await request("api/user/education", "PUT", formToSend, {
+        await request('api/user/education', 'PUT', formToSend, {
           Authorization: `Bearer ${token}`,
-          institution: "higher",
+          institution: 'higher',
         });
 
-        props.showAlert("success", "Изменения успешно сохранены");
+        props.showAlert('success', 'Изменения успешно сохранены');
 
         props.alertRef.current.scrollIntoView();
         setForm((prevForm) => {
           console.log(prevForm);
-          let updatedForm = prevForm.filter((element) => !element.removed);
+          const updatedForm = prevForm.filter((element) => !element.removed);
           updatedForm.forEach((element) => {
             delete element.empty;
           });
@@ -211,7 +218,7 @@ export const Higher = (props) => {
         setAddedFormElementsCounter(0);
       } catch (error) {
         console.log(error);
-        props.showAlert("danger", error.message);
+        props.showAlert('danger', error.message);
         props.alertRef.current.scrollIntoView();
       }
     }
@@ -250,6 +257,7 @@ export const Higher = (props) => {
                 <p
                   className={classes.addInstitution}
                   onClick={addInstitutionHandler}
+                  role="button"
                 >
                   +Добавить учебное заведение
                 </p>

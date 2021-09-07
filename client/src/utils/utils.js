@@ -1,8 +1,13 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-useless-escape */
-import Form from "react-bootstrap/Form";
+import React from 'react';
+
+import Form from 'react-bootstrap/Form';
 
 function validateEmail(email) {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
 }
 
@@ -12,31 +17,31 @@ export const validateForm = (formData, setForm) => {
 
   for (const input in formData) {
     const updatedInputData = { ...formData[input] };
-    //Validate email
+    // Validate email
     updatedInputData.isInvalid = false;
     if (
-      formData[input].validation.type === "email" &&
+      formData[input].validation.type === 'email' &&
       !validateEmail(formData[input].value.trim())
     ) {
       updatedInputData.isInvalid = true;
-      updatedInputData.errorMessage = "Введите корректный email";
+      updatedInputData.errorMessage = 'Введите корректный email';
     }
 
-    //Validate password confirmation
-    if (input === "passwordConfirm" && formData.password.value.trim() !== "") {
+    // Validate password confirmation
+    if (input === 'passwordConfirm' && formData.password.value.trim() !== '') {
       if (formData[input].value.trim() !== formData.password.value) {
         updatedInputData.isInvalid = true;
-        updatedInputData.errorMessage = "Пароли не совпадают";
+        updatedInputData.errorMessage = 'Пароли не совпадают';
       }
     }
 
-    //Validate length
+    // Validate length
     if (formData[input].validation.min && formData[input].validation.max) {
       if (
         (formData[input].value.trim().length < formData[input].validation.min ||
           formData[input].value.trim().length >
             formData[input].validation.max) &&
-        formData[input].value.trim() !== ""
+        formData[input].value.trim() !== ''
       ) {
         updatedInputData.isInvalid = true;
         updatedInputData.errorMessage = `Длина поля должна составлять от ${formData[input].validation.min} до ${formData[input].validation.max} символов`;
@@ -45,10 +50,10 @@ export const validateForm = (formData, setForm) => {
 
     if (
       formData[input].validation.required &&
-      formData[input].value.trim() === ""
+      formData[input].value.trim() === ''
     ) {
       updatedInputData.isInvalid = true;
-      updatedInputData.errorMessage = "Необходимо заполнить это поле";
+      updatedInputData.errorMessage = 'Необходимо заполнить это поле';
     }
 
     if (updatedInputData.isInvalid) {
@@ -71,53 +76,55 @@ export const validateFormArray = (formArray, setForm) => {
     }
     let updatedFormData = {};
     for (const input in formData) {
-      if (input === "empty") {
+      if (input === 'empty') {
         updatedFormData = { ...updatedFormData, empty: true };
-        continue;
+        // continue;
+        return;
       }
       const updatedInputData = { ...formData[input] };
-      //Validate email
+      // Validate email
       updatedInputData.isInvalid = false;
       if (
-        formData[input].validation.type === "email" &&
+        formData[input].validation.type === 'email' &&
         !validateEmail(formData[input].value.trim())
       ) {
         updatedInputData.isInvalid = true;
-        updatedInputData.errorMessage = "Введите корректный email";
+        updatedInputData.errorMessage = 'Введите корректный email';
       }
 
-      //Validate password confirmation
+      // Validate password confirmation
       if (
-        input === "passwordConfirm" &&
-        formData.password.value.trim() !== ""
+        input === 'passwordConfirm' &&
+        formData.password.value.trim() !== ''
       ) {
         if (formData[input].value.trim() !== formData.password.value) {
           updatedInputData.isInvalid = true;
-          updatedInputData.errorMessage = "Пароли не совпадают";
+          updatedInputData.errorMessage = 'Пароли не совпадают';
         }
       }
 
-      //Validate length
+      // Validate length
       if (formData[input].validation.min && formData[input].validation.max) {
         if (
           (formData[input].value.trim().length <
             formData[input].validation.min ||
             formData[input].value.trim().length >
               formData[input].validation.max) &&
-          formData[input].value.trim() !== ""
+          formData[input].value.trim() !== ''
         ) {
           updatedInputData.isInvalid = true;
           updatedInputData.errorMessage = `Длина поля должна составлять от ${formData[input].validation.min} до ${formData[input].validation.max} символов`;
         }
       }
 
-      //Validate year
-      if (formData[input].validation.type === "year") {
+      // Validate year
+      if (formData[input].validation.type === 'year') {
         if (
           (formData[input].value.trim().length !== 4 ||
+            // eslint-disable-next-line no-restricted-globals
             isNaN(formData[input].value.trim()) ||
-            formData[input].value.charAt(0) === "0") &&
-          formData[input].value.trim() !== ""
+            formData[input].value.charAt(0) === '0') &&
+          formData[input].value.trim() !== ''
         ) {
           updatedInputData.isInvalid = true;
           updatedInputData.errorMessage = `Введите корректный год`;
@@ -126,10 +133,10 @@ export const validateFormArray = (formArray, setForm) => {
 
       if (
         formData[input].validation.required &&
-        formData[input].value.trim() === ""
+        formData[input].value.trim() === ''
       ) {
         updatedInputData.isInvalid = true;
-        updatedInputData.errorMessage = "Необходимо заполнить это поле";
+        updatedInputData.errorMessage = 'Необходимо заполнить это поле';
       }
 
       if (updatedInputData.isInvalid) {
@@ -174,10 +181,10 @@ export const formSubmitHandler = (event, form, setForm, url) => {
     }
 
     fetch(url, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(clearedFormData),
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
       .then((response) => response.json())
@@ -201,7 +208,7 @@ export const createForm = (formData, setForm) => {
           value={formData[key].value}
           onChange={(event) => inputHandler(event, formData, setForm)}
           isInvalid={formData[key].isInvalid}
-          as={formData[key].type === "textarea" ? "textarea" : "input"}
+          as={formData[key].type === 'textarea' ? 'textarea' : 'input'}
           maxLength="512"
         />
         <Form.Control.Feedback type="invalid">
@@ -217,11 +224,12 @@ export const createFormPart = (form, changeHandler) => {
   const JSX = [];
 
   for (const key in form) {
-    if (key === "empty") {
+    if (key === 'empty') {
+      // eslint-disable-next-line no-continue
       continue;
     }
     JSX.push(
-      <Form.Group controlId={"formBasicName"} key={key}>
+      <Form.Group controlId="formBasicName" key={key}>
         <Form.Label>{form[key].label}</Form.Label>
         <Form.Control
           type={form[key].type}

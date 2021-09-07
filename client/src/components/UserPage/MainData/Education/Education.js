@@ -1,7 +1,10 @@
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
 
-import classes from "./Education.module.css";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+
+import classes from './Education.module.css';
 
 export const Education = (props) => {
   if (props.data.length === 0) {
@@ -11,7 +14,7 @@ export const Education = (props) => {
   props.data.sort((a, b) => b.yearStart - a.yearStart);
 
   const educationJSX = props.data.map((establishment) => {
-    let educationYearsString = "";
+    let educationYearsString = '';
     if (establishment.yearStart && establishment.yearEnd) {
       educationYearsString = `с ${establishment.yearStart} по ${establishment.yearEnd} г.`;
     } else if (establishment.yearStart) {

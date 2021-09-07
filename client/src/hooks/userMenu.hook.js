@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
 export const useUserMenu = () => {
-  const [username, setUsername] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [username, setUsername] = useState('');
+  const [avatar, setAvatar] = useState('');
 
   const changeUsername = useCallback((newUsername) => {
     setUsername(newUsername);

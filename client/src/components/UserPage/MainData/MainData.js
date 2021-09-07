@@ -1,20 +1,23 @@
-import Card from "react-bootstrap/Card";
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
 
-import { Career } from "./Career/Career";
-import { Education } from "./Education/Education";
-import { Header } from "./Header/Header";
+import Card from 'react-bootstrap/Card';
 
-import { MainInfo } from "./MainInfo/MainInfo";
-import { PersonalData } from "./PersonalData/PersonalData";
+import { Career } from './Career/Career';
+import { Education } from './Education/Education';
+import { Header } from './Header/Header';
 
-import classes from "./MainData.module.css";
+import { MainInfo } from './MainInfo/MainInfo';
+import { PersonalData } from './PersonalData/PersonalData';
+
+import classes from './MainData.module.css';
 
 const MainData = (props) => {
   return (
     <Card className={classes.MainData}>
       <Card.Body>
         <Header data={props.userData.header} id={props.id} />
-        <Card.Text as={"div"}>
+        <Card.Text as="div">
           <MainInfo data={props.userData.mainInfo} />
           <Career data={props.userData.career} />
           <Education data={props.userData.education} />

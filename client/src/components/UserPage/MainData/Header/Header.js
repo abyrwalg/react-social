@@ -1,11 +1,18 @@
-import { useContext, useState, useEffect, useRef, useCallback } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+/* eslint-disable react/destructuring-assignment */
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-import { AuthContext } from "../../../../context/AuthContext";
-import { useHttp } from "../../../../hooks/http.hook";
-import classes from "./Header.module.css";
+import { AuthContext } from '../../../../context/AuthContext';
+import { useHttp } from '../../../../hooks/http.hook';
+import classes from './Header.module.css';
 
 export const Header = (props) => {
   const { uid, token } = useContext(AuthContext);
@@ -16,7 +23,7 @@ export const Header = (props) => {
   const [showStatusForm, setShowStatusForm] = useState(false);
   const [prevStatus, setPrevStatus] = useState(props.data.status);
   const [status, setStatus] = useState(props.data.status);
-  const [buttonState, setButtonState] = useState("Отмена");
+  const [buttonState, setButtonState] = useState('Отмена');
 
   useEffect(() => {
     if (statusInputRef.current !== null) {
@@ -26,9 +33,9 @@ export const Header = (props) => {
 
   useEffect(() => {
     if (status === prevStatus) {
-      setButtonState("Отмена");
+      setButtonState('Отмена');
     } else {
-      setButtonState("Изменить");
+      setButtonState('Изменить');
     }
   }, [prevStatus, status]);
 
@@ -49,12 +56,12 @@ export const Header = (props) => {
 
   const submitFormHandler = async (event) => {
     event.preventDefault();
-    if (buttonState === "Отмена") {
+    if (buttonState === 'Отмена') {
       setShowStatusForm(false);
-    } else if (buttonState === "Изменить") {
+    } else if (buttonState === 'Изменить') {
       const updateStatus = { status };
       try {
-        await request("/api/user/status", "PATCH", updateStatus, {
+        await request('/api/user/status', 'PATCH', updateStatus, {
           Authorization: `Bearer ${token}`,
         });
         setShowStatusForm(false);
@@ -132,16 +139,16 @@ export const Header = (props) => {
   );
 
   useEffect(() => {
-    document.addEventListener("click", clickHandler);
+    document.addEventListener('click', clickHandler);
     return () => {
-      document.removeEventListener("click", clickHandler);
+      document.removeEventListener('click', clickHandler);
     };
   }, [clickHandler]);
 
   return (
     <>
       <Card.Title className="pb-2">
-        {props.data.name + " " + props.data.surname}
+        {`${props.data.name} ${props.data.surname}`}
       </Card.Title>
       <Card.Subtitle className="mb-2 text-muted">
         {statusJSX}

@@ -1,17 +1,21 @@
-import { useContext, useState } from "react";
+/* eslint-disable no-continue */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-shadow */
+import React, { useContext, useState } from 'react';
 
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-import classes from "./Career.module.css";
-import { validateFormArray } from "../../../utils/utils";
-import { WorkPlace } from "./WorkPlace/WorkPlace";
-import { useHttp } from "../../../hooks/http.hook";
-import { AuthContext } from "../../../context/AuthContext";
+import classes from './Career.module.css';
+import { validateFormArray } from '../../../utils/utils';
+import { WorkPlace } from './WorkPlace/WorkPlace';
+import { useHttp } from '../../../hooks/http.hook';
+import { AuthContext } from '../../../context/AuthContext';
 
 export const Career = (props) => {
-  const data = props.data;
+  const { data } = props;
 
   const { token } = useContext(AuthContext);
   const { request, loading } = useHttp();
@@ -21,9 +25,9 @@ export const Career = (props) => {
       const form = {
         workplace: {
           value: element.workplace,
-          type: "text",
-          label: "Место работы",
-          placeholder: "Укажите место работы",
+          type: 'text',
+          label: 'Место работы',
+          placeholder: 'Укажите место работы',
           validation: {
             required: true,
             min: 3,
@@ -34,9 +38,9 @@ export const Career = (props) => {
         },
         city: {
           value: element.city,
-          type: "text",
-          label: "Город",
-          placeholder: "Укажите город",
+          type: 'text',
+          label: 'Город',
+          placeholder: 'Укажите город',
           validation: {
             required: false,
             min: 3,
@@ -47,9 +51,9 @@ export const Career = (props) => {
         },
         position: {
           value: element.position,
-          type: "text",
-          label: "Должность",
-          placeholder: "Укажите должность",
+          type: 'text',
+          label: 'Должность',
+          placeholder: 'Укажите должность',
           validation: {
             required: false,
             min: 3,
@@ -60,24 +64,24 @@ export const Career = (props) => {
         },
         yearStart: {
           value: element.yearStart,
-          type: "text",
-          label: "Год начала работы",
-          placeholder: "Укажите год начала работы",
+          type: 'text',
+          label: 'Год начала работы',
+          placeholder: 'Укажите год начала работы',
           validation: {
             required: false,
-            type: "year",
+            type: 'year',
           },
           isInvalid: false,
           errorMessage: null,
         },
         yearEnd: {
           value: element.yearEnd,
-          type: "text",
-          label: "Год окончания работы",
-          placeholder: "Укажите год окончания работы",
+          type: 'text',
+          label: 'Год окончания работы',
+          placeholder: 'Укажите год окончания работы',
           validation: {
             required: false,
-            type: "year",
+            type: 'year',
           },
           isInvalid: false,
           errorMessage: null,
@@ -92,10 +96,10 @@ export const Career = (props) => {
       ...prevForm,
       {
         workplace: {
-          value: "",
-          type: "text",
-          label: "Место работы",
-          placeholder: "Укажите место работы",
+          value: '',
+          type: 'text',
+          label: 'Место работы',
+          placeholder: 'Укажите место работы',
           validation: {
             required: true,
             min: 3,
@@ -105,10 +109,10 @@ export const Career = (props) => {
           errorMessage: null,
         },
         city: {
-          value: "",
-          type: "text",
-          label: "Город",
-          placeholder: "Укажите город",
+          value: '',
+          type: 'text',
+          label: 'Город',
+          placeholder: 'Укажите город',
           validation: {
             required: false,
             min: 3,
@@ -118,10 +122,10 @@ export const Career = (props) => {
           errorMessage: null,
         },
         position: {
-          value: "",
-          type: "text",
-          label: "Должность",
-          placeholder: "Укажите должность",
+          value: '',
+          type: 'text',
+          label: 'Должность',
+          placeholder: 'Укажите должность',
           validation: {
             required: false,
             min: 3,
@@ -131,25 +135,25 @@ export const Career = (props) => {
           errorMessage: null,
         },
         yearStart: {
-          value: "",
-          type: "text",
-          label: "Год начала работы",
-          placeholder: "Укажите год начала работы",
+          value: '',
+          type: 'text',
+          label: 'Год начала работы',
+          placeholder: 'Укажите год начала работы',
           validation: {
             required: false,
-            type: "year",
+            type: 'year',
           },
           isInvalid: false,
           errorMessage: null,
         },
         yearEnd: {
-          value: "",
-          type: "text",
-          label: "Год окончания работы",
-          placeholder: "Укажите год окончания работы",
+          value: '',
+          type: 'text',
+          label: 'Год окончания работы',
+          placeholder: 'Укажите год окончания работы',
           validation: {
             required: false,
-            type: "year",
+            type: 'year',
           },
           isInvalid: false,
           errorMessage: null,
@@ -179,7 +183,7 @@ export const Career = (props) => {
         }
         const formPart = {};
         for (const key in element) {
-          if (key === "empty") {
+          if (key === 'empty') {
             continue;
           }
           formPart[key] = element[key].value;
@@ -187,14 +191,14 @@ export const Career = (props) => {
         formToSend.push(formPart);
       });
       try {
-        await request("api/user/career", "PUT", formToSend, {
+        await request('api/user/career', 'PUT', formToSend, {
           Authorization: `Bearer ${token}`,
         });
-        props.showAlert("success", "Изменения успешно сохранены");
+        props.showAlert('success', 'Изменения успешно сохранены');
         props.alertRef.current.scrollIntoView();
         setForm((prevForm) => {
           console.log(prevForm);
-          let updatedForm = prevForm.filter((element) => !element.removed);
+          const updatedForm = prevForm.filter((element) => !element.removed);
           updatedForm.forEach((element) => {
             delete element.empty;
           });
@@ -204,7 +208,7 @@ export const Career = (props) => {
         setAddedFormElementsCounter(0);
       } catch (error) {
         console.log(error);
-        props.showAlert("danger", error.message);
+        props.showAlert('danger', error.message);
         props.alertRef.current.scrollIntoView();
       }
     }
@@ -217,6 +221,7 @@ export const Career = (props) => {
           {form.map((element, index) =>
             !element.removed ? (
               <WorkPlace
+                // eslint-disable-next-line react/no-array-index-key
                 key={index}
                 form={element}
                 setForm={setForm}
@@ -239,7 +244,13 @@ export const Career = (props) => {
           )}
           {addedFormElementsCounter < 3 ? (
             <>
-              <p className={classes.addInstitution} onClick={addJobHandler}>
+              <p
+                className={classes.addInstitution}
+                onClick={addJobHandler}
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+                role="button"
+                tabIndex={0}
+              >
                 +Добавить место работы
               </p>
               <hr />

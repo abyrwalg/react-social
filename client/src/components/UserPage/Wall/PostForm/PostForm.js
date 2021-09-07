@@ -1,17 +1,17 @@
-import { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useRef, useEffect } from 'react';
 
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-import classes from "./PostForm.module.css";
+import classes from './PostForm.module.css';
 
-import { useHttp } from "../../../../hooks/http.hook";
-import { AuthContext } from "../../../../context/AuthContext";
+import { useHttp } from '../../../../hooks/http.hook';
+import { AuthContext } from '../../../../context/AuthContext';
 
 export default function PostForm(props) {
   const { request, loading } = useHttp();
   const { token } = useContext(AuthContext);
-  const [commentText, setCommentText] = useState("");
+  const [commentText, setCommentText] = useState('');
   const [textareaHeight, setTextareaHeight] = useState(100);
   const textareaRef = useRef(null);
 
@@ -23,10 +23,10 @@ export default function PostForm(props) {
     event.preventDefault();
     try {
       console.log(loading);
-      setCommentText("");
+      setCommentText('');
       const data = await request(
-        "/api/comments",
-        "POST",
+        '/api/comments',
+        'POST',
         {
           parent: props.id,
           content: commentText,
@@ -63,7 +63,7 @@ export default function PostForm(props) {
         variant="primary"
         type="submit"
         className={classes.submitButton}
-        disabled={(commentText.trim().length > 0 ? false : true) || loading}
+        disabled={!(commentText.trim().length > 0) || loading}
       >
         Опубликовать
       </Button>

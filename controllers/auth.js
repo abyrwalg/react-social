@@ -1,26 +1,27 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+/* eslint-disable node/exports-style */
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const User = require("../models/User");
-const validator = require("../utils/validateForm");
+const User = require('../models/User');
+const validator = require('../utils/validateForm');
 
 exports.register = async (req, res) => {
   const validateForm = validator.validateRegistration(req.body);
   if (validateForm.error) {
     res.status(400).json({
-      message: "Неправильные данные формы",
+      message: 'Неправильные данные формы',
       error: validateForm.error,
     });
   }
 
   try {
-    const candidate = await User.findOne({ "regInfo.email": req.body.email });
+    const candidate = await User.findOne({ 'regInfo.email': req.body.email });
 
     if (candidate) {
-      return res.status(400).json({ message: "Этот email уже используется" });
+      return res.status(400).json({ message: 'Этот email уже используется' });
     }
 
-    let lastUser = await User.find().sort("-regInfo.uid").limit(1);
+    const lastUser = await User.find().sort('-regInfo.uid').limit(1);
     let lastUid = 0;
     if (lastUser.length > 0) {
       lastUid = lastUser[0].regInfo.uid;
@@ -41,10 +42,10 @@ exports.register = async (req, res) => {
     });
     await user.save();
 
-    res.status(201).json({ message: "Пользователь создан" });
+    res.status(201).json({ message: 'Пользователь создан' });
   } catch (error) {
     res.status(400).json({
-      message: "Что-то пошло не так, попробуйте снова",
+      message: 'Что-то пошло не так, попробуйте снова',
       error: error.message,
     });
   }
@@ -54,14 +55,14 @@ exports.login = async (req, res) => {
   const validateForm = validator.validateLogin(req.body);
   if (validateForm.error) {
     res.status(400).json({
-      message: "Неправильные данные формы",
+      message: 'Неправильные данные формы',
       error: validateForm.error,
     });
   }
   try {
-    const user = await User.findOne({ "regInfo.email": req.body.email });
+    const user = await User.findOne({ 'regInfo.email': req.body.email });
     if (!user) {
-      return res.status(400).json({ message: "Неверный email или пароль" });
+      return res.status(400).json({ message: 'Неверный email или пароль' });
     }
 
     const checkPassword = await bcrypt.compare(
@@ -70,16 +71,16 @@ exports.login = async (req, res) => {
     );
 
     if (!checkPassword) {
-      return res.status(400).json({ message: "Неверный email или пароль" });
+      return res.status(400).json({ message: 'Неверный email или пароль' });
     }
 
     const token = jwt.sign(
       { id: user._id, name: user.header.name },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: '1h' }
     );
     res.json({
-      message: "Success",
+      message: 'Success',
       token,
       uid: user.regInfo.uid,
       id: user._id,
@@ -87,6 +88,6 @@ exports.login = async (req, res) => {
       expires: Date.now() + 3600 * 1000,
     });
   } catch (error) {
-    res.status(400).json({ message: "Что-то пошло не так, попробуйте снова" });
+    res.status(400).json({ message: 'Что-то пошло не так, попробуйте снова' });
   }
 };

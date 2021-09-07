@@ -1,9 +1,11 @@
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-//import Form from "react-bootstrap/Form";
+import React from 'react';
 
-import classes from "./HigherElem.module.css";
-import { createFormPart } from "../../../../../utils/utils";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+// import Form from "react-bootstrap/Form";
+
+import classes from './HigherElem.module.css';
+import { createFormPart } from '../../../../../utils/utils';
 
 export const HigherElem = (props) => {
   const { form, setForm, fullForm, setCounter } = props;
@@ -53,7 +55,7 @@ export const HigherElem = (props) => {
                   ? hideFormElementHandler
                   : deleteEmptyFormElementHandler
               }
-            ></i>
+            />
           </OverlayTrigger>
         </span>
         {createFormPart(form, changeHandler)}

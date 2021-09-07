@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import "font-awesome/css/font-awesome.min.css";
+import 'font-awesome/css/font-awesome.min.css';
 
 const DropdownMenuButton = React.forwardRef(({ children, onClick }, ref) => (
   <i

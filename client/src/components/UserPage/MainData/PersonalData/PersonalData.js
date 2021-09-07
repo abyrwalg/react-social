@@ -1,5 +1,9 @@
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
+
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 export const PersonalData = (props) => {
   let isEmpty = true;
@@ -33,17 +37,17 @@ export const PersonalData = (props) => {
       <hr />
       <div>
         <h2 className="h5 mb-3">Личная информация</h2>
-        {props.data.interests !== ""
-          ? fillWithData("Интересы", props.data.interests)
+        {props.data.interests !== ''
+          ? fillWithData('Интересы', props.data.interests)
           : null}
-        {props.data.favoriteBooks !== ""
-          ? fillWithData("Любимые книги", props.data.favoriteBooks)
+        {props.data.favoriteBooks !== ''
+          ? fillWithData('Любимые книги', props.data.favoriteBooks)
           : null}
-        {props.data.favoriteMovies !== ""
-          ? fillWithData("Любимые фильмы", props.data.favoriteMovies)
+        {props.data.favoriteMovies !== ''
+          ? fillWithData('Любимые фильмы', props.data.favoriteMovies)
           : null}
-        {props.data.favoriteMusic !== ""
-          ? fillWithData("Любимая музыка", props.data.favoriteMusic)
+        {props.data.favoriteMusic !== ''
+          ? fillWithData('Любимая музыка', props.data.favoriteMusic)
           : null}
         {props.data.about ? (
           <Row>

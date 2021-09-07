@@ -1,21 +1,21 @@
-const express = require("express");
-//const cors = require("cors");
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
-//const bodyParser = require("body-parser");
+const express = require('express');
+// const cors = require("cors");
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+// const bodyParser = require("body-parser");
 
 const app = express();
 
 dotenv.config();
 
-//Middleware
+// Middleware
 app.use(express.json({ extended: true }));
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static('uploads'));
 
-//Route middlewares
-app.use("/api/auth", require("./routes/auth.routes"));
-app.use("/api/user", require("./routes/user.routes"));
-app.use("/api/comments", require("./routes/comments.routes"));
+// Route middlewares
+app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/user', require('./routes/user.routes'));
+app.use('/api/comments', require('./routes/comments.routes'));
 
 async function start() {
   try {
@@ -28,8 +28,9 @@ async function start() {
       console.log(`Server is up and running on port ${process.env.PORT}`);
     });
   } catch (error) {
-    console.log("Что-то пошло не так:", error.message);
-    process.exit(1);
+    // console.log('Что-то пошло не так:', error.message);
+    // process.exit(1);
+    throw new Error(error.message);
   }
 }
 

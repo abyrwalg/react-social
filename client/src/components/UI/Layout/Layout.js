@@ -1,31 +1,26 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react/destructuring-assignment */
+import React, { useEffect, useState, useContext } from 'react';
 
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import { Link, useHistory } from "react-router-dom";
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import { Link, useHistory } from 'react-router-dom';
 
-import AvatarDropdownToggle from "./AvatarDropdownToggle/AvatarDropdownToggle";
+import AvatarDropdownToggle from './AvatarDropdownToggle/AvatarDropdownToggle';
 
-import "./Layout.css";
-import { useContext } from "react";
-import { AuthContext } from "../../../context/AuthContext";
+import './Layout.css';
+import { AuthContext } from '../../../context/AuthContext';
 
-import { useHttp } from "../../../hooks/http.hook";
+import { useHttp } from '../../../hooks/http.hook';
 
 const Layout = (props) => {
   const { request } = useHttp();
-  const {
-    isAuthenticated,
-    logout,
-    token,
-    changeUsername,
-    changeAvatar,
-  } = useContext(AuthContext);
+  const { isAuthenticated, logout, token, changeUsername, changeAvatar } =
+    useContext(AuthContext);
 
   const history = useHistory();
   const [navExpanded, setNavExpanded] = useState(false);
@@ -33,7 +28,7 @@ const Layout = (props) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await request("/api/user/", "GET", null, {
+        const response = await request('/api/user/', 'GET', null, {
           Authorization: `Bearer ${token}`,
         });
 
@@ -74,7 +69,7 @@ const Layout = (props) => {
       <NavDropdown.Item
         onClick={() => {
           logout();
-          history.go("/");
+          history.go('/');
         }}
       >
         Выйти
@@ -99,7 +94,7 @@ const Layout = (props) => {
           </Navbar.Brand>
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
-            onClick={() => setNavExpanded(navExpanded ? false : "expanded")}
+            onClick={() => setNavExpanded(navExpanded ? false : 'expanded')}
           />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
@@ -126,7 +121,7 @@ const Layout = (props) => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Container style={{ marginTop: "75px" }}>{props.children}</Container>
+      <Container style={{ marginTop: '75px' }}>{props.children}</Container>
     </>
   );
 };

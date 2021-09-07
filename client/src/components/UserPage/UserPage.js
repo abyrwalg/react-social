@@ -1,26 +1,26 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
-import UserImageBlock from "./UserImageBlock/UserImageBlock";
-import MainData from "./MainData/MainData";
-import Spinner from "../UI/Spinner/Spinner";
-import Wall from "./Wall/Wall";
-import { useHttp } from "../../hooks/http.hook";
+import UserImageBlock from './UserImageBlock/UserImageBlock';
+import MainData from './MainData/MainData';
+import Spinner from '../UI/Spinner/Spinner';
+import Wall from './Wall/Wall';
+import { useHttp } from '../../hooks/http.hook';
 
-import classes from "./UserPage.module.css";
+import classes from './UserPage.module.css';
 
 const UserInfo = () => {
   const [userData, setUserData] = useState(null);
   const { request } = useHttp();
-  let { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await request(`/api/user/${id}`, "GET");
+        const data = await request(`/api/user/${id}`, 'GET');
         setUserData(data);
       } catch (error) {
         console.log(error);

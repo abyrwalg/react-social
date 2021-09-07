@@ -1,6 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
+/* eslint-disable no-shadow */
+import { useState, useCallback, useEffect } from 'react';
 
-const storageName = "userData";
+const storageName = 'userData';
 
 export const useAuth = () => {
   const [token, setToken] = useState(null);

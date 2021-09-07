@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
-import { createForm, formSubmitHandler } from "../../utils/utils";
+import { createForm, formSubmitHandler } from '../../utils/utils';
 
 const SignUpPage = () => {
   const [form, setForm] = useState({
     name: {
-      value: "",
-      type: "text",
-      label: "Имя",
-      placeholder: "Введите имя",
+      value: '',
+      type: 'text',
+      label: 'Имя',
+      placeholder: 'Введите имя',
       validation: {
         required: true,
         min: 3,
@@ -25,10 +25,10 @@ const SignUpPage = () => {
       errorMessage: null,
     },
     surname: {
-      value: "",
-      type: "text",
-      label: "Фамилия",
-      placeholder: "Введите фамилию",
+      value: '',
+      type: 'text',
+      label: 'Фамилия',
+      placeholder: 'Введите фамилию',
       validation: {
         required: true,
         min: 3,
@@ -38,10 +38,10 @@ const SignUpPage = () => {
       errorMessage: null,
     },
     birthdate: {
-      value: "",
-      type: "date",
-      label: "Дата рождения",
-      placeholder: "",
+      value: '',
+      type: 'date',
+      label: 'Дата рождения',
+      placeholder: '',
       validation: {
         required: true,
       },
@@ -49,22 +49,22 @@ const SignUpPage = () => {
       errorMessage: null,
     },
     email: {
-      value: "",
-      type: "email",
-      label: "Email",
-      placeholder: "Введите email",
+      value: '',
+      type: 'email',
+      label: 'Email',
+      placeholder: 'Введите email',
       validation: {
         required: true,
-        type: "email",
+        type: 'email',
       },
       isInvalid: false,
       errorMessage: null,
     },
     password: {
-      value: "",
-      type: "password",
-      label: "Пароль",
-      placeholder: "Введите пароль",
+      value: '',
+      type: 'password',
+      label: 'Пароль',
+      placeholder: 'Введите пароль',
       validation: {
         required: true,
         min: 8,
@@ -74,10 +74,10 @@ const SignUpPage = () => {
       errorMessage: null,
     },
     passwordConfirm: {
-      value: "",
-      type: "password",
-      label: "Подтверждение пароля",
-      placeholder: "Подтвердите пароль",
+      value: '',
+      type: 'password',
+      label: 'Подтверждение пароля',
+      placeholder: 'Подтвердите пароль',
       validation: {
         required: true,
       },
@@ -91,11 +91,11 @@ const SignUpPage = () => {
       <Col lg={6} className="m-auto">
         <Card>
           <Card.Body>
-            <Card.Title style={{ textAlign: "center" }}>Регистрация</Card.Title>
+            <Card.Title style={{ textAlign: 'center' }}>Регистрация</Card.Title>
             <Form
               noValidate
               onSubmit={(event) =>
-                formSubmitHandler(event, form, setForm, "api/auth/register")
+                formSubmitHandler(event, form, setForm, 'api/auth/register')
               }
             >
               {createForm(form, setForm)}
@@ -105,7 +105,7 @@ const SignUpPage = () => {
             </Form>
             <Card.Text
               className="text-muted mt-2"
-              style={{ textAlign: "center" }}
+              style={{ textAlign: 'center' }}
             >
               Уже есть аккаунт? <Link to="/login">Войдите.</Link>
             </Card.Text>

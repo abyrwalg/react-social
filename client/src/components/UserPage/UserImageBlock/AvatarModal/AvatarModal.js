@@ -1,14 +1,15 @@
-import { useContext, useState } from "react";
+/* eslint-disable react/destructuring-assignment */
+import React, { useContext, useState } from 'react';
 
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Image from "react-bootstrap/Image";
-import Form from "react-bootstrap/Form";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image';
+import Form from 'react-bootstrap/Form';
 
-import classes from "./AvatarModal.module.css";
-import { AuthContext } from "../../../../context/AuthContext";
-import { useHttp } from "../../../../hooks/http.hook";
-import defaultUserpic from "../../../../assets/images/default-userpic.png";
+import classes from './AvatarModal.module.css';
+import { AuthContext } from '../../../../context/AuthContext';
+import { useHttp } from '../../../../hooks/http.hook';
+import defaultUserpic from '../../../../assets/images/default-userpic.png';
 
 export const AvatarModal = (props) => {
   const { request, loading: loadingHook } = useHttp();
@@ -16,22 +17,22 @@ export const AvatarModal = (props) => {
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState({
     isInvalid: false,
-    message: "Выберите аватар",
+    message: 'Выберите аватар',
   });
   const [loading, setLoading] = useState(false);
-  const avatarUrl = props.avatar ? "/" + props.avatar : defaultUserpic;
+  const avatarUrl = props.avatar ? `/${props.avatar}` : defaultUserpic;
 
   const uploadChangeHandler = (event) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
     if (!allowedExtensions.exec(event.target.files[0].name)) {
       setUploadStatus({
         isInvalid: true,
-        message: "Поддерживаются только изображения форматов JPEG, PNG и GIF",
+        message: 'Поддерживаются только изображения форматов JPEG, PNG и GIF',
       });
     } else if (event.target.files[0].size > 1024 * 1024 * 2) {
       setUploadStatus({
         isInvalid: true,
-        message: "Размер изображения не должен превышать 2 МБ",
+        message: 'Размер изображения не должен превышать 2 МБ',
       });
     } else {
       setUploadFile(event.target.files[0]);
@@ -45,11 +46,11 @@ export const AvatarModal = (props) => {
   const submitFormHandler = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("avatar", uploadFile);
+    formData.append('avatar', uploadFile);
     try {
       setLoading(true);
-      const response = await fetch("/api/user/avatar", {
-        method: "POST",
+      const response = await fetch('/api/user/avatar', {
+        method: 'POST',
         body: formData,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -60,12 +61,12 @@ export const AvatarModal = (props) => {
       if (response.ok) {
         props.setAvatar(result.avatar);
         changeAvatar(result.avatar);
-        setUploadStatus({ isInvalid: false, message: "" });
-        setUploadFile("");
+        setUploadStatus({ isInvalid: false, message: '' });
+        setUploadFile('');
         props.handleClose();
       } else {
         setUploadStatus({ isInvalid: true, message: result.message });
-        setUploadFile("");
+        setUploadFile('');
       }
       setLoading(false);
     } catch (error) {
@@ -76,13 +77,13 @@ export const AvatarModal = (props) => {
 
   const deleteAvatarHandler = async () => {
     try {
-      await request("/api/user/avatar", "DELETE", null, {
+      await request('/api/user/avatar', 'DELETE', null, {
         Authorization: `Bearer ${token}`,
       });
-      changeAvatar("");
+      changeAvatar('');
       props.setAvatar(null);
       props.handleClose();
-      setUploadFile("");
+      setUploadFile('');
     } catch (error) {
       console.log(error);
     }

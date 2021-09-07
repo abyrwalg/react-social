@@ -80,6 +80,7 @@
 }
 
 .editComment textarea {
+  min-height: 36px;
   margin-bottom: 15px;
   resize: none;
   overflow: hidden;

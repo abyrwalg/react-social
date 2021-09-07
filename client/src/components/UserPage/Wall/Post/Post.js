@@ -1,39 +1,39 @@
-import { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect, useRef } from 'react';
 
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Dropdown from "react-bootstrap/Dropdown";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import "font-awesome/css/font-awesome.min.css";
+import 'font-awesome/css/font-awesome.min.css';
 
-import classes from "./Post.module.css";
+import classes from './Post.module.css';
 
-import DropdownMenuButton from "./DropdownMenuButton/DropdownMenuButton";
+import DropdownMenuButton from './DropdownMenuButton/DropdownMenuButton';
 
-import { useHttp } from "../../../../hooks/http.hook";
-import { AuthContext } from "../../../../context/AuthContext";
+import { useHttp } from '../../../../hooks/http.hook';
+import { AuthContext } from '../../../../context/AuthContext';
 
 export default function Post(props) {
-  const comment = props.comment;
+  const { comment } = props;
   const postDate = new Date(comment.date);
-  const dateOptions = { year: "numeric", month: "long", day: "numeric" };
-  const avatarPath = comment.avatar.replace(/\\/g, "/");
+  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const avatarPath = comment.avatar.replace(/\\/g, '/');
   const { token, id } = useContext(AuthContext);
   const [showEditArea, setShowEditArea] = useState(false);
   const [editAreaContent, setEditAreaContent] = useState(comment.content);
   const [editAreaHeight, setEditAreaHeight] = useState(0);
   const [likesCount, setLikesCount] = useState(comment.likes.length);
   const [likesIconClass, setLikesIconClass] = useState(
-    comment.likes.includes(id) ? `fa fa-heart ${classes.red}` : "fa fa-heart-o"
+    comment.likes.includes(id) ? `fa fa-heart ${classes.red}` : 'fa fa-heart-o'
   );
   const editAreaRef = useRef(null);
   const { request, loading } = useHttp();
 
-  const [hideDropdownMenuClass, setHideDropdownMenuClass] = useState("");
-  let hideEdiCommentButtonClass = "";
+  const [hideDropdownMenuClass, setHideDropdownMenuClass] = useState('');
+  let hideEdiCommentButtonClass = '';
 
   useEffect(() => {
     if (comment.parent !== id && comment.author !== id) {
@@ -52,8 +52,8 @@ export default function Post(props) {
   const deletePostHandler = async () => {
     try {
       await request(
-        "/api/comments",
-        "DELETE",
+        '/api/comments',
+        'DELETE',
         { ...comment },
         { Authorization: `Bearer ${token}` }
       );
@@ -86,14 +86,14 @@ export default function Post(props) {
   const hideEditPostHandler = () => {
     setShowEditArea(false);
     setEditAreaContent(comment.content);
-    setHideDropdownMenuClass("");
+    setHideDropdownMenuClass('');
   };
 
   const submitEditedPostHandler = async () => {
     try {
       await request(
-        "/api/comments",
-        "PUT",
+        '/api/comments',
+        'PUT',
         { ...comment, content: editAreaContent },
         { Authorization: `Bearer ${token}` }
       );
@@ -113,14 +113,14 @@ export default function Post(props) {
   const likeHandler = async () => {
     try {
       const data = await request(
-        "/api/comments/likes",
-        "POST",
+        '/api/comments/likes',
+        'POST',
         { id: comment._id },
         { Authorization: `Bearer ${token}` }
       );
       setLikesCount(data.likes.length);
       setLikesIconClass(
-        data.likes.includes(id) ? `fa fa-heart ${classes.red}` : "fa fa-heart-o"
+        data.likes.includes(id) ? `fa fa-heart ${classes.red}` : 'fa fa-heart-o'
       );
     } catch (error) {
       console.log(error);
@@ -135,18 +135,18 @@ export default function Post(props) {
             <div
               style={{ backgroundImage: `url(/${avatarPath})` }}
               className={classes.avatar}
-            ></div>
+            />
           </Link>
           <Link className={classes.userName} to={`/users/${comment.uid}`}>
             {comment.userName}
           </Link>
           <span className={classes.date}>
-            {postDate.toLocaleDateString("ru-RU", dateOptions)}
+            {postDate.toLocaleDateString('ru-RU', dateOptions)}
           </span>
           <Dropdown
             className={`${classes.dropDownButton} ${hideDropdownMenuClass}`}
           >
-            <Dropdown.Toggle as={DropdownMenuButton}></Dropdown.Toggle>
+            <Dropdown.Toggle as={DropdownMenuButton} />
             <Dropdown.Menu>
               <Dropdown.Item onClick={deletePostHandler}>Удалить</Dropdown.Item>
               <Dropdown.Item
@@ -193,9 +193,9 @@ export default function Post(props) {
         <i
           className={`${likesIconClass} ${classes.like}`}
           onClick={likeHandler}
-        ></i>
+        />
         <span className={classes.likesCount}>{likesCount}</span>
-        <i className={`fa fa-comment-o ${classes.comments}`}></i>
+        <i className={`fa fa-comment-o ${classes.comments}`} />
       </Card.Footer>
     </Card>
   );

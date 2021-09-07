@@ -1,10 +1,12 @@
-import "font-awesome/css/font-awesome.min.css";
+import React from 'react';
 
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
+import 'font-awesome/css/font-awesome.min.css';
 
-import classes from "./WorkPlace.module.css";
-import { createFormPart } from "../../../../utils/utils";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+
+import classes from './WorkPlace.module.css';
+import { createFormPart } from '../../../../utils/utils';
 
 export const WorkPlace = (props) => {
   const { form, setForm, fullForm, setCounter } = props;
@@ -80,7 +82,7 @@ export const WorkPlace = (props) => {
                   ? hideFormElementHandler
                   : deleteEmptyFormElementHandler
               }
-            ></i>
+            />
           </OverlayTrigger>
         </span>
         {createFormPart(form, changeHandler)}

@@ -1,13 +1,16 @@
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
+
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 export const MainInfo = (props) => {
   const formatteDate = new Date(props.data.birthdate).toLocaleDateString(
-    "ru-RU",
+    'ru-RU',
     {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     }
   );
   return (

@@ -1,5 +1,5 @@
-const { ObjectId } = require("mongodb");
-const { Schema, model } = require("mongoose");
+const { ObjectId } = require('mongodb');
+const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
   parent: { type: ObjectId, required: true },
@@ -9,4 +9,4 @@ const schema = new Schema({
   likes: [ObjectId],
 });
 
-module.exports = model("Comment", schema);
+module.exports = model('Comment', schema);

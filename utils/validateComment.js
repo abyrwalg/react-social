@@ -1,12 +1,11 @@
-const ObjectId = require("mongoose").Types.ObjectId;
+const { ObjectId } = require('mongoose').Types;
 
 const validateComment = (comment) => {
   console.log(comment);
   if (!ObjectId.isValid(comment.parent)) {
     return false;
-  } else {
-    return true;
   }
+  return true;
 };
 
 module.exports = validateComment;

@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
   regInfo: {
@@ -9,8 +9,8 @@ const schema = new Schema({
   header: {
     name: { type: String, required: true },
     surname: { type: String, required: true },
-    status: { type: String, default: "" },
-    avatar: { type: String, default: "" },
+    status: { type: String, default: '' },
+    avatar: { type: String, default: '' },
   },
   mainInfo: {
     birthdate: {
@@ -19,11 +19,11 @@ const schema = new Schema({
     },
     country: {
       type: String,
-      default: "",
+      default: '',
     },
     city: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   career: { type: Array },
@@ -31,25 +31,25 @@ const schema = new Schema({
   personalData: {
     interests: {
       type: String,
-      default: "",
+      default: '',
     },
     favoriteBooks: {
       type: String,
-      default: "",
+      default: '',
     },
     favoriteMovies: {
       type: String,
-      default: "",
+      default: '',
     },
     favoriteMusic: {
       type: String,
-      default: "",
+      default: '',
     },
     about: {
       type: String,
-      default: "",
+      default: '',
     },
   },
 });
 
-module.exports = model("User", schema);
+module.exports = model('User', schema);

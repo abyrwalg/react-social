@@ -1,15 +1,17 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Switch, Route, Redirect } from "react-router-dom";
+import React from 'react';
 
-import Layout from "./components/UI/Layout/Layout";
-import UserPage from "./components/UserPage/UserPage";
-import LoginPage from "./components/LoginPage/LoginPage";
-import SignUpPage from "./components/SignUpPage/SignUpPage";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { AuthContext } from "./context/AuthContext";
-import { useAuth } from "./hooks/auth.hook";
-import { useUserMenu } from "./hooks/userMenu.hook";
-import { EditUserDataPage } from "./components/EditUserDataPage/EditUserDataPage";
+import Layout from './components/UI/Layout/Layout';
+import UserPage from './components/UserPage/UserPage';
+import LoginPage from './components/LoginPage/LoginPage';
+import SignUpPage from './components/SignUpPage/SignUpPage';
+
+import { AuthContext } from './context/AuthContext';
+import { useAuth } from './hooks/auth.hook';
+import { useUserMenu } from './hooks/userMenu.hook';
+import { EditUserDataPage } from './components/EditUserDataPage/EditUserDataPage';
 
 function App() {
   const { token, login, logout, id, uid, expires, ready } = useAuth();
@@ -42,7 +44,7 @@ function App() {
           {isAuthenticated ? (
             <Route path="/edit" exact component={EditUserDataPage} />
           ) : null}
-          {ready ? <Redirect to={`/users/${uid ? uid : "1"}`} /> : null}
+          {ready ? <Redirect to={`/users/${uid || '1'}`} /> : null}
         </Switch>
       </Layout>
     </AuthContext.Provider>

@@ -1,7 +1,10 @@
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
 
-import classes from "./Career.module.css";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+
+import classes from './Career.module.css';
 
 export const Career = (props) => {
   if (props.data.length === 0) {
@@ -11,7 +14,7 @@ export const Career = (props) => {
   props.data.sort((a, b) => b.yearStart - a.yearStart);
 
   const careerJSX = props.data.map((job) => {
-    let jobYearsString = "";
+    let jobYearsString = '';
     if (job.yearStart && job.yearEnd) {
       jobYearsString = `с ${job.yearStart} по ${job.yearEnd} г.`;
     } else if (job.yearStart) {
