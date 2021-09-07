@@ -14,7 +14,7 @@ import { AuthContext } from './context/AuthContext';
 // import { useAuth } from './hooks/auth.hook';
 import { useUserMenu } from './hooks/userMenu.hook';
 import { EditUserDataPage } from './components/EditUserDataPage/EditUserDataPage';
-import { hasAuthData } from './helpers/authStorage';
+import { hasAuthData, getAuthData } from './helpers/authStorage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(hasAuthData());
@@ -46,7 +46,7 @@ function App() {
           <Route path="/login" exact component={LoginPage} />
           <Route path="/signup" exact component={SignUpPage} />
           <PrivateRoute path="/edit" exact component={EditUserDataPage} />
-          <Redirect to="users/1" />
+          <Redirect to={`users/${hasAuthData() ? getAuthData().uid : 1}`} />
         </Switch>
       </Layout>
     </AuthContext.Provider>
