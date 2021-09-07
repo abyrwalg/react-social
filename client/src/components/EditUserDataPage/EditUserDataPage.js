@@ -1,34 +1,34 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useRef } from 'react';
 
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Tabs from "react-bootstrap/Tabs";
-import Tab from "react-bootstrap/Tab";
-import Alert from "react-bootstrap/Alert";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import Alert from 'react-bootstrap/Alert';
 
-import { MainData } from "./MainData/MainData";
-import { PersonalData } from "./PersonalData/PersonalData";
-import Spinner from "../UI/Spinner/Spinner";
+import { MainData } from './MainData/MainData';
+import { PersonalData } from './PersonalData/PersonalData';
+import Spinner from '../UI/Spinner/Spinner';
 
-import { useHttp } from "../../hooks/http.hook";
-import { AuthContext } from "../../context/AuthContext";
-import { Career } from "./Career/Career";
-import { Education } from "./Education/Education";
+import { useHttp } from '../../hooks/http.hook';
+import { Career } from './Career/Career';
+import { Education } from './Education/Education';
+import { getAuthData } from '../../helpers/authStorage';
 
 export const EditUserDataPage = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState({
-    variant: "",
-    message: "",
+    variant: '',
+    message: '',
     show: false,
   });
-  const { uid } = useContext(AuthContext);
+  const { uid } = getAuthData();
   const { request } = useHttp();
   const myRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Редактирование моей страницы";
+    document.title = 'Редактирование моей страницы';
     async function fetchData() {
       try {
         const data = await request(`/api/user/${uid}`);

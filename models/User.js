@@ -50,6 +50,10 @@ const schema = new Schema({
       default: '',
     },
   },
+  refreshToken: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = model('User', schema);

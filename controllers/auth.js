@@ -1,6 +1,7 @@
 /* eslint-disable node/exports-style */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const randToken = require('rand-token');
 
 const User = require('../models/User');
 const validator = require('../utils/validateForm');
@@ -77,17 +78,57 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, name: user.header.name },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '15m' }
     );
+
+    const refreshToken = randToken.uid(255);
+    user.refreshToken = refreshToken;
+    await user.save();
+
     res.json({
       message: 'Success',
       token,
       uid: user.regInfo.uid,
       id: user._id,
       name: user.header.name,
-      expires: Date.now() + 3600 * 1000,
+      expires: Date.now() + 900 * 1000,
+      refreshToken,
     });
   } catch (error) {
     res.status(400).json({ message: 'Что-то пошло не так, попробуйте снова' });
   }
+};
+
+exports.refreshToken = async (req, res) => {
+  let user;
+  try {
+    user = await User.findById(req.body.userId);
+  } catch (error) {
+    console.log(error);
+  }
+
+  if (!user || user.refreshToken !== req.body.refreshToken) {
+    res.status(401).json({ key: 'error.token-expired' });
+    return;
+  }
+
+  const token = jwt.sign(
+    { id: user._id, name: user.header.name },
+    process.env.JWT_SECRET,
+    { expiresIn: '15m' }
+  );
+
+  const refreshToken = randToken.uid(255);
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  res.json({
+    message: 'Success',
+    token,
+    uid: user.regInfo.uid,
+    id: user._id,
+    name: user.header.name,
+    expires: Date.now() + 900 * 1000,
+    refreshToken,
+  });
 };

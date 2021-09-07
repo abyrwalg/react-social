@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-shadow */
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -14,6 +14,7 @@ import Alert from 'react-bootstrap/Alert';
 import { AuthContext } from '../../context/AuthContext';
 import { useHttp } from '../../hooks/http.hook';
 import { createForm, validateForm } from '../../utils/utils';
+import { saveAuthData } from '../../helpers/authStorage';
 
 const LoginPage = () => {
   const [form, setForm] = useState({
@@ -48,8 +49,9 @@ const LoginPage = () => {
     show: false,
   });
 
-  const { login } = useContext(AuthContext);
+  const { setIsLoggedIn } = useContext(AuthContext);
   const { request, loading } = useHttp();
+  const history = useHistory();
 
   const formSubmitHandler = async (event, form, setForm, url) => {
     event.preventDefault();
@@ -66,7 +68,15 @@ const LoginPage = () => {
         const data = await request(url, 'POST', clearedFormData);
         console.log(data);
         if (data.token) {
-          login(data.token, data.id, data.uid, data.expires, data.name);
+          saveAuthData({
+            uid: data.uid,
+            id: data.id,
+            name: data.name,
+            token: data.token,
+            refreshToken: data.refreshToken,
+          });
+          setIsLoggedIn(true);
+          history.push(`/users/${data.uid}`);
         }
       } catch (error) {
         setAlert({ variant: 'danger', message: error.message, show: true });

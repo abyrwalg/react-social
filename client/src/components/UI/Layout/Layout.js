@@ -16,21 +16,28 @@ import './Layout.css';
 import { AuthContext } from '../../../context/AuthContext';
 
 import { useHttp } from '../../../hooks/http.hook';
+import {
+  clearAuthData,
+  getAuthData,
+  hasAuthData,
+} from '../../../helpers/authStorage';
 
 const Layout = (props) => {
   const { request } = useHttp();
-  const { isAuthenticated, logout, token, changeUsername, changeAvatar } =
+  const { changeUsername, changeAvatar, isLoggedIn, setIsLoggedIn } =
     useContext(AuthContext);
 
   const history = useHistory();
   const [navExpanded, setNavExpanded] = useState(false);
 
   useEffect(() => {
+    console.log('isLoggedIn', isLoggedIn);
+  }, [isLoggedIn]);
+
+  useEffect(() => {
     async function fetchData() {
       try {
-        const response = await request('/api/user/', 'GET', null, {
-          Authorization: `Bearer ${token}`,
-        });
+        const response = await request('/api/user/', 'GET');
 
         changeUsername(response.data.name);
         changeAvatar(response.data.avatar);
@@ -38,23 +45,12 @@ const Layout = (props) => {
         console.log(error);
       }
     }
-    if (token) {
+    if (isLoggedIn) {
       fetchData();
     }
-  }, [request, token, changeAvatar, changeUsername]);
+  }, [request, changeAvatar, changeUsername, isLoggedIn]);
 
-  const loginButton = (
-    <Nav.Link
-      className="logout-button"
-      as={Link}
-      to="/login"
-      onClick={() => setNavExpanded(false)}
-    >
-      Войти
-    </Nav.Link>
-  );
-
-  const userMenu = (
+  const loginMenu = isLoggedIn ? (
     <NavDropdown title={<AvatarDropdownToggle />} id="basic-nav-dropdown">
       <NavDropdown.Item
         as={Link}
@@ -68,15 +64,24 @@ const Layout = (props) => {
       <NavDropdown.Divider />
       <NavDropdown.Item
         onClick={() => {
-          logout();
-          history.go('/');
+          clearAuthData();
+          setIsLoggedIn(false);
+          history.push('/');
         }}
       >
         Выйти
       </NavDropdown.Item>
     </NavDropdown>
+  ) : (
+    <Nav.Link
+      className="logout-button"
+      as={Link}
+      to="/login"
+      onClick={() => setNavExpanded(false)}
+    >
+      Войти
+    </Nav.Link>
   );
-
   return (
     <>
       <Navbar
@@ -89,7 +94,11 @@ const Layout = (props) => {
         expanded={navExpanded}
       >
         <Container>
-          <Navbar.Brand as={Link} to="/" onClick={() => setNavExpanded(false)}>
+          <Navbar.Brand
+            as={Link}
+            to={`/users/${hasAuthData() ? getAuthData().uid : 1}`}
+            onClick={() => setNavExpanded(false)}
+          >
             Social-Network
           </Navbar.Brand>
           <Navbar.Toggle
@@ -117,7 +126,7 @@ const Layout = (props) => {
               />
               <Button variant="outline-success">Search</Button>
             </Form>
-            {isAuthenticated ? userMenu : loginButton}
+            {loginMenu}
           </Navbar.Collapse>
         </Container>
       </Navbar>

@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
 
+import axios from 'axios';
+
 export const useHttp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -13,12 +15,16 @@ export const useHttp = () => {
           // eslint-disable-next-line no-param-reassign
           headers['Content-Type'] = 'application/json';
         }
-        const response = await fetch(url, { method, body, headers });
-        const data = await response.json();
+        // const response = await fetch(url, { method, body, headers });
+        // const data = await response.json();
+        const response = await axios({ url, method, data: body, headers });
+        const { data } = response;
 
-        if (!response.ok) {
+        console.log(response.statusText);
+
+        /* if (response.statusText !== 'OK') {
           throw new Error(data.message || 'Что-то пошло не так');
-        }
+        } */
         setLoading(false);
         return data;
       } catch (err) {
