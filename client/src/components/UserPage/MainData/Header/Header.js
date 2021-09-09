@@ -12,10 +12,12 @@ import Button from 'react-bootstrap/Button';
 
 import { AuthContext } from '../../../../context/AuthContext';
 import { useHttp } from '../../../../hooks/http.hook';
+import { getAuthData } from '../../../../helpers/authStorage';
 import classes from './Header.module.css';
 
 export const Header = (props) => {
-  const { uid, token } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
+  const { uid } = getAuthData();
   const { request, loading } = useHttp();
   const statusFormRef = useRef(null);
   const statusInputRef = useRef(null);
