@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const AppError = require('./utils/appError');
-const errorHandler = require('./utils/errorHandler');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 

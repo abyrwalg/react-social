@@ -10,10 +10,11 @@ import classes from './AvatarModal.module.css';
 import { AuthContext } from '../../../../context/AuthContext';
 import { useHttp } from '../../../../hooks/http.hook';
 import defaultUserpic from '../../../../assets/images/default-userpic.png';
+import { getAuthData } from '../../../../helpers/authStorage';
 
 export const AvatarModal = (props) => {
   const { request, loading: loadingHook } = useHttp();
-  const { token, changeAvatar } = useContext(AuthContext);
+  const { changeAvatar } = useContext(AuthContext);
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState({
     isInvalid: false,
@@ -53,7 +54,7 @@ export const AvatarModal = (props) => {
         method: 'POST',
         body: formData,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getAuthData().token}`,
         },
       });
 
@@ -77,9 +78,7 @@ export const AvatarModal = (props) => {
 
   const deleteAvatarHandler = async () => {
     try {
-      await request('/api/user/avatar', 'DELETE', null, {
-        Authorization: `Bearer ${token}`,
-      });
+      await request('/api/user/avatar', 'DELETE');
       changeAvatar('');
       props.setAvatar(null);
       props.handleClose();
@@ -90,12 +89,27 @@ export const AvatarModal = (props) => {
   };
 
   return (
-    <Modal show={props.show} onHide={props.handleClose} centered size="lg">
+    <Modal
+      show={props.show}
+      onHide={() => {
+        setUploadFile(null);
+        setUploadStatus({
+          isInvalid: false,
+          message: 'Выберите аватар',
+        });
+        props.handleClose();
+      }}
+      centered
+      size="lg"
+    >
       <Modal.Header closeButton>
         <Modal.Title>Ваш аватар</Modal.Title>
       </Modal.Header>
       <Modal.Body className={classes.modalBody}>
-        <Image src={avatarUrl} fluid />
+        <Image
+          src={uploadFile ? URL.createObjectURL(uploadFile) : avatarUrl}
+          fluid
+        />
       </Modal.Body>
       <Modal.Footer className={classes.modalFooter}>
         <Form className={classes.uploadForm} onSubmit={submitFormHandler}>
@@ -107,6 +121,7 @@ export const AvatarModal = (props) => {
             onChange={uploadChangeHandler}
             isInvalid={uploadStatus.isInvalid}
             className={classes.imageInput}
+            accept=".png,.jpg,.jpeg,.gif"
           />
           <Button
             variant="primary"

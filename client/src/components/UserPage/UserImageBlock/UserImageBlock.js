@@ -1,16 +1,17 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
 import { AvatarModal } from './AvatarModal/AvatarModal';
-import { AuthContext } from '../../../context/AuthContext';
+
 import classes from './UserImageBlock.module.css';
 import defaultUserpic from '../../../assets/images/default-userpic.png';
+import { getAuthData } from '../../../helpers/authStorage';
 
 const UserImageBlock = (props) => {
-  const { uid } = useContext(AuthContext);
+  const { uid } = getAuthData();
   const [showModal, setShowModal] = useState(false);
   const [avatar, setAvatar] = useState(props.avatar);
 

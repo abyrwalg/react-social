@@ -3,13 +3,16 @@ const { Router } = require('express');
 const router = Router();
 
 const multer = require('multer');
+const cryptoRandomString = require('crypto-random-string');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, './uploads/avatars/');
   },
   filename(req, file, cb) {
-    cb(null, Date.now() + file.originalname);
+    const extension = /\.([a-z0-9]+)$/i.exec(file.originalname)[1];
+    const fileName = `${cryptoRandomString({ length: 30 })}.${extension}`;
+    cb(null, fileName);
   },
 });
 const fileFilter = (req, file, cb) => {
@@ -29,7 +32,7 @@ const upload = multer({
   limits: { fileSize: 1024 * 1024 * 2 },
 });
 
-const auth = require('../middleware/auth.middleware');
+const auth = require('../middleware/auth');
 const userController = require('../controllers/user');
 
 router.get('/', auth, userController.getLoggedUserData);
