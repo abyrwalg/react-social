@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Card from 'react-bootstrap/Card';
 
@@ -7,12 +7,12 @@ import Post from './Post/Post';
 
 import classes from './Wall.module.css';
 import { useHttp } from '../../../hooks/http.hook';
-import { AuthContext } from '../../../context/AuthContext';
+import { hasAuthData } from '../../../helpers/authStorage';
 
 const Wall = (props) => {
   const { id } = props;
   const { request } = useHttp();
-  const { isAuthenticated } = useContext(AuthContext);
+  const isAuthenticated = hasAuthData();
   const [comments, setComments] = useState([]);
 
   useEffect(() => {

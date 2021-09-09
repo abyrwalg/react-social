@@ -15,13 +15,16 @@ import DropdownMenuButton from './DropdownMenuButton/DropdownMenuButton';
 
 import { useHttp } from '../../../../hooks/http.hook';
 import { AuthContext } from '../../../../context/AuthContext';
+import { getAuthData } from '../../../../helpers/authStorage';
 
 export default function Post(props) {
   const { comment } = props;
   const postDate = new Date(comment.date);
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   const avatarPath = comment.avatar.replace(/\\/g, '/');
-  const { token, id } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
+  const { id } = getAuthData();
+
   const [showEditArea, setShowEditArea] = useState(false);
   const [editAreaContent, setEditAreaContent] = useState(comment.content);
   const [editAreaHeight, setEditAreaHeight] = useState(0);
