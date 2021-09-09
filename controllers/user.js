@@ -3,36 +3,26 @@
 const fs = require('fs');
 
 const User = require('../models/User');
+const catchAsync = require('../utils/catchAsync');
 const validator = require('../utils/validateForm');
 
-exports.getLoggedUserData = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-    res.status(200).json({ message: 'Success', data: user.header });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Что-то пошло не так, попробуйте снова',
-      error: error.message,
-    });
-  }
-};
+exports.getLoggedUserData = catchAsync(async (req, res) => {
+  const user = await User.findById(req.user.id);
+  res.status(200).json({ message: 'Success', data: user.header });
+});
 
-exports.getUserDataById = async (req, res) => {
-  try {
-    let user = await User.findOne({ 'regInfo.uid': req.params.id });
-    if (!user) {
-      res.status(404).json({ message: 'Такого пользователя не существует' });
-    }
-    user = user.toObject();
-    delete user.regInfo.password;
-    delete user.__v;
-    res.json(user);
-  } catch (error) {
-    res.status(400).json({ message: 'Что-то пошло не так, попробуйте снова' });
+exports.getUserDataById = catchAsync(async (req, res) => {
+  let user = await User.findOne({ 'regInfo.uid': req.params.id });
+  if (!user) {
+    res.status(404).json({ message: 'Такого пользователя не существует' });
   }
-};
+  user = user.toObject();
+  delete user.regInfo.password;
+  delete user.__v;
+  res.json(user);
+});
 
-exports.updatePersonalData = async (req, res) => {
+exports.updatePersonalData = catchAsync(async (req, res) => {
   const update = {};
   for (const key in req.body) {
     update[key] = req.body[key].value;
@@ -44,18 +34,12 @@ exports.updatePersonalData = async (req, res) => {
       error: validateForm.error,
     });
   }
-  try {
-    await User.updateOne({ _id: req.user.id }, { personalData: update });
-    res.status(200).json({ message: 'Success maybe' });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Что-то пошло не так, попробуйте снова',
-      error: error.message,
-    });
-  }
-};
 
-exports.updateMainData = async (req, res) => {
+  await User.updateOne({ _id: req.user.id }, { personalData: update });
+  res.status(200).json({ message: 'Success maybe' });
+});
+
+exports.updateMainData = catchAsync(async (req, res) => {
   const updateHeader = {
     name: req.body.name.value,
     surname: req.body.surname.value,
@@ -76,25 +60,18 @@ exports.updateMainData = async (req, res) => {
     });
   }
 
-  try {
-    const user = await User.findById(req.user.id);
-    user.header = { ...user.header, ...updateHeader };
-    user.mainInfo = updateMainInfo;
-    /* await User.updateOne(
+  const user = await User.findById(req.user.id);
+  user.header = { ...user.header, ...updateHeader };
+  user.mainInfo = updateMainInfo;
+  /* await User.updateOne(
       { _id: req.user.id },
       { header: updateHeader, mainInfo: updateMainInfo }
     ); */
-    await user.save();
-    res.status(200).json({ message: 'Success' });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Что-то пошло не так, попробуйте снова',
-      error: error.message,
-    });
-  }
-};
+  await user.save();
+  res.status(200).json({ message: 'Success' });
+});
 
-exports.updateCareer = async (req, res) => {
+exports.updateCareer = catchAsync(async (req, res) => {
   const validateForm = validator.validateCareer(req.body);
   if (validateForm.error) {
     return res.status(400).json({
@@ -103,49 +80,35 @@ exports.updateCareer = async (req, res) => {
     });
   }
 
-  try {
-    await User.updateOne({ _id: req.user.id }, { career: req.body });
-    res.status(200).json({ message: 'Success' });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Что-то пошло не так, попробуйте снова',
-      error: error.message,
+  await User.updateOne({ _id: req.user.id }, { career: req.body });
+  res.status(200).json({ message: 'Success' });
+});
+
+exports.updateEducation = catchAsync(async (req, res) => {
+  const typeKeys = { school: 'Школа', higher: 'Вуз' };
+  const institutionType = typeKeys[req.headers.institution];
+  const user = await User.findById(req.user.id);
+  const saveWithoutChanges = user.education.filter(
+    (element) => element.type !== institutionType
+  );
+  const updatedEducation = [...saveWithoutChanges, ...req.body];
+  const validateForm = validator.validateEducation(updatedEducation);
+  if (validateForm.error) {
+    return res.status(400).json({
+      message: 'Неправильные данные формы',
+      error: validateForm.error,
     });
   }
-};
+  await User.updateOne({ _id: req.user.id }, { education: updatedEducation });
+  res.status(200).json({
+    message: 'Success',
+    data: updatedEducation.filter(
+      (element) => element.type === institutionType
+    ),
+  });
+});
 
-exports.updateEducation = async (req, res) => {
-  try {
-    const typeKeys = { school: 'Школа', higher: 'Вуз' };
-    const institutionType = typeKeys[req.headers.institution];
-    const user = await User.findById(req.user.id);
-    const saveWithoutChanges = user.education.filter(
-      (element) => element.type !== institutionType
-    );
-    const updatedEducation = [...saveWithoutChanges, ...req.body];
-    const validateForm = validator.validateEducation(updatedEducation);
-    if (validateForm.error) {
-      return res.status(400).json({
-        message: 'Неправильные данные формы',
-        error: validateForm.error,
-      });
-    }
-    await User.updateOne({ _id: req.user.id }, { education: updatedEducation });
-    res.status(200).json({
-      message: 'Success',
-      data: updatedEducation.filter(
-        (element) => element.type === institutionType
-      ),
-    });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Что-то пошло не так, попробуйте снова',
-      error: error.message,
-    });
-  }
-};
-
-exports.updateStatus = async (req, res) => {
+exports.updateStatus = catchAsync(async (req, res) => {
   const validateForm = validator.validateStatus(req.body);
   if (validateForm.error) {
     return res.status(400).json({
@@ -154,68 +117,46 @@ exports.updateStatus = async (req, res) => {
     });
   }
 
-  try {
-    const user = await User.findById(req.user.id);
-    const updateHeader = { ...user.header, status: req.body.status };
-    await User.updateOne({ _id: req.user.id }, { header: updateHeader });
-    res.status(200).json({ message: 'Success' });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Что-то пошло не так, попробуйте снова',
-      error: error.message,
-    });
-  }
-};
+  const user = await User.findById(req.user.id);
+  const updateHeader = { ...user.header, status: req.body.status };
+  await User.updateOne({ _id: req.user.id }, { header: updateHeader });
+  res.status(200).json({ message: 'Success' });
+});
 
-exports.updateAvatar = async (req, res) => {
+exports.updateAvatar = catchAsync(async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'error' });
   }
 
-  try {
-    const user = await User.findById(req.user.id);
-    if (user.header.avatar !== '') {
-      console.log('Debugging');
-      fs.unlink(user.header.avatar, async (err) => {
-        if (err) {
-          res.status(400).json({
-            message: 'Что-то пошло не так, попробуйте снова',
-            error: err.message,
-          });
-        }
-      });
-    }
-    user.header.avatar = req.file.path;
-    await user.save();
-    res.status(200).json({ message: 'Success', avatar: req.file.path });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Что-то пошло не так, попробуйте снова',
-      error: error.message,
-    });
-  }
-};
-
-exports.deleteAvatar = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-
+  const user = await User.findById(req.user.id);
+  if (user.header.avatar !== '') {
     fs.unlink(user.header.avatar, async (err) => {
       if (err) {
         res.status(400).json({
           message: 'Что-то пошло не так, попробуйте снова',
           error: err.message,
         });
-      } else {
-        user.header.avatar = '';
-        await user.save();
-        res.status(200).json({ message: 'Success' });
       }
     });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Что-то пошло не так, попробуйте снова',
-      error: error.message,
-    });
   }
-};
+  user.header.avatar = req.file.path;
+  await user.save();
+  res.status(200).json({ message: 'Success', avatar: req.file.path });
+});
+
+exports.deleteAvatar = catchAsync(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  fs.unlink(user.header.avatar, async (err) => {
+    if (err) {
+      res.status(400).json({
+        message: 'Что-то пошло не так, попробуйте снова',
+        error: err.message,
+      });
+    } else {
+      user.header.avatar = '';
+      await user.save();
+      res.status(200).json({ message: 'Success' });
+    }
+  });
+});
