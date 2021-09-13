@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 const bcrypt = require('bcrypt');
 
 const { Schema, model } = require('mongoose');
@@ -65,5 +67,15 @@ schema.pre('save', async function (next) {
 
   this.regInfo.password = await bcrypt.hash(this.regInfo.password, 12);
 });
+
+schema.methods.createRefreshToken = function () {
+  const refreshToken = crypto.randomBytes(32).toString('hex');
+  this.refreshToken = crypto
+    .createHash('sha256')
+    .update(refreshToken)
+    .digest('hex');
+
+  return refreshToken;
+};
 
 module.exports = model('User', schema);

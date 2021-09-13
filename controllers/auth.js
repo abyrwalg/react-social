@@ -1,7 +1,8 @@
 /* eslint-disable node/exports-style */
+const crypto = require('crypto');
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const randToken = require('rand-token');
 
 const User = require('../models/User');
 const validator = require('../utils/validateForm');
@@ -19,8 +20,11 @@ async function createAndSendTokens(user, statusCode, res) {
     httpOnly: true,
   };
 
-  const refreshToken = randToken.uid(255);
-  user.refreshToken = refreshToken;
+  if (process.env.NODE_ENV === 'production') {
+    cookieOptions.secure = true;
+  }
+
+  const refreshToken = user.createRefreshToken();
   await user.save();
 
   user.regInfo.password = undefined;
@@ -100,55 +104,21 @@ exports.login = catchAsync(async (req, res) => {
     return res.status(400).json({ message: 'Неверный email или пароль' });
   }
 
-  /*  const token = jwt.sign(
-    { id: user._id, name: user.header.name },
-    process.env.JWT_SECRET,
-    { expiresIn: '15m' }
-  );
-
-  const refreshToken = randToken.uid(255);
-  user.refreshToken = refreshToken;
-  await user.save();
-
-  res.json({
-    message: 'Success',
-    token,
-    uid: user.regInfo.uid,
-    id: user._id,
-    name: user.header.name,
-    expires: Date.now() + 900 * 1000,
-    refreshToken,
-  }); */
   createAndSendTokens(user, 200, res);
 });
 
 exports.refreshToken = catchAsync(async (req, res) => {
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.cookies.refreshToken)
+    .digest('hex');
+
   const user = await User.findById(req.body.userId);
 
-  if (!user || user.refreshToken !== req.cookies.refreshToken) {
+  if (!user || user.refreshToken !== hashedToken) {
     res.status(401).json({ key: 'error.token-expired' });
     return;
   }
-
-  /* const token = jwt.sign(
-    { id: user._id, name: user.header.name },
-    process.env.JWT_SECRET,
-    { expiresIn: '15m' }
-  );
-
-  const refreshToken = randToken.uid(255);
-  user.refreshToken = refreshToken;
-  await user.save();
-
-  res.json({
-    message: 'Success',
-    token,
-    uid: user.regInfo.uid,
-    id: user._id,
-    name: user.header.name,
-    expires: Date.now() + 900 * 1000,
-    refreshToken,
-  }); */
 
   createAndSendTokens(user, 200, res);
 });
