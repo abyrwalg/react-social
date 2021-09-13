@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+/* eslint-disable no-unused-vars */
+import React, { useState, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Alert from 'react-bootstrap/Alert';
 
 import { createForm, formSubmitHandler } from '../../utils/utils';
+import { saveAuthData } from '../../helpers/authStorage';
+import { AuthContext } from '../../context/AuthContext';
 
 const SignUpPage = () => {
+  const [alertMessage, setAlertMessage] = useState('');
   const [form, setForm] = useState({
     name: {
       value: '',
@@ -86,9 +91,13 @@ const SignUpPage = () => {
     },
   });
 
+  const history = useHistory();
+  const { setIsLoggedIn } = useContext(AuthContext);
+
   return (
     <Row>
       <Col lg={6} className="m-auto">
+        {alertMessage ? <Alert variant="danger">{alertMessage}</Alert> : null}
         <Card>
           <Card.Body>
             <Card.Title style={{ textAlign: 'center' }}>Регистрация</Card.Title>
@@ -96,6 +105,24 @@ const SignUpPage = () => {
               noValidate
               onSubmit={(event) =>
                 formSubmitHandler(event, form, setForm, 'api/auth/register')
+                  .then((response) => {
+                    const { data } = response;
+                    if (data.token) {
+                      saveAuthData({
+                        uid: data.data.user.regInfo.uid,
+                        id: data.data.user._id,
+                        name: data.data.user.header.name,
+                        token: data.token,
+                        refreshToken: data.data.refreshToken,
+                      });
+                      setIsLoggedIn(true);
+                      history.push(`/users/${data.data.user.regInfo.uid}`);
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error.response.data.message);
+                    setAlertMessage(error.response.data.message);
+                  })
               }
             >
               {createForm(form, setForm)}

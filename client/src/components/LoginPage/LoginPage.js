@@ -69,14 +69,13 @@ const LoginPage = () => {
         console.log(data);
         if (data.token) {
           saveAuthData({
-            uid: data.uid,
-            id: data.id,
-            name: data.name,
+            uid: data.data.user.regInfo.uid,
+            id: data.data.user._id,
+            name: data.data.user.header.name,
             token: data.token,
-            refreshToken: data.refreshToken,
           });
           setIsLoggedIn(true);
-          history.push(`/users/${data.uid}`);
+          history.push(`/users/${data.data.user.regInfo.uid}`);
         }
       } catch (error) {
         setAlert({ variant: 'danger', message: error.message, show: true });

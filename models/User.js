@@ -1,9 +1,11 @@
+const bcrypt = require('bcrypt');
+
 const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
   regInfo: {
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: false },
     uid: { type: Number, required: true, unique: true },
   },
   header: {
@@ -54,6 +56,14 @@ const schema = new Schema({
     type: String,
     default: '',
   },
+});
+
+schema.pre('save', async function (next) {
+  if (!this.isModified('regInfo.password')) {
+    return next();
+  }
+
+  this.regInfo.password = await bcrypt.hash(this.regInfo.password, 12);
 });
 
 module.exports = model('User', schema);

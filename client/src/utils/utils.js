@@ -1,9 +1,11 @@
+/* eslint-disable consistent-return */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-useless-escape */
 import React from 'react';
 
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 
 function validateEmail(email) {
   const re =
@@ -169,7 +171,7 @@ const inputHandler = (event, form, setForm) => {
   });
 };
 
-export const formSubmitHandler = (event, form, setForm, url) => {
+export const formSubmitHandler = async (event, form, setForm, url) => {
   event.preventDefault();
   const isValid = validateForm(form, setForm);
 
@@ -180,18 +182,12 @@ export const formSubmitHandler = (event, form, setForm, url) => {
       clearedFormData[key] = form[key].value;
     }
 
-    fetch(url, {
+    const response = await axios(url, {
       method: 'POST',
-      body: JSON.stringify(clearedFormData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => console.log(error));
+      data: clearedFormData,
+    });
+
+    return response;
   }
 };
 

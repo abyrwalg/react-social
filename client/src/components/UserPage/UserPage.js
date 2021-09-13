@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -16,6 +16,7 @@ const UserInfo = () => {
   const [userData, setUserData] = useState(null);
   const { request } = useHttp();
   const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchData() {
@@ -24,6 +25,7 @@ const UserInfo = () => {
         setUserData(data);
       } catch (error) {
         console.log(error);
+        history.push('/');
       }
     }
     fetchData();

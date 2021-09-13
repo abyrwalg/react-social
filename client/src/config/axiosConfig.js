@@ -29,10 +29,7 @@ axios.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const { refreshToken, id } = JSON.parse(localStorage.getItem('userData'));
-      if (!refreshToken) {
-        return Promise.reject(error);
-      }
+      const { id } = JSON.parse(localStorage.getItem('userData'));
 
       return fetch(`/api/auth/token-refresh`, {
         method: 'POST',
@@ -40,7 +37,6 @@ axios.interceptors.response.use(
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          refreshToken,
           userId: id,
         }),
       })
@@ -48,12 +44,10 @@ axios.interceptors.response.use(
         .then((res) => {
           if (res.token) {
             saveAuthData({
-              uid: res.uid,
-              id: res.id,
+              uid: res.data.user.regInfo.uid,
+              id: res.data.user._id,
               token: res.token,
-              expires: res.timeToLive,
-              name: res.name,
-              refreshToken: res.refreshToken,
+              name: res.data.user.header.name,
             });
             axios.defaults.headers.common.Authorization = `Bearer ${res.token}`;
             return axios(originalRequest);
